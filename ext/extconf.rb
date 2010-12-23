@@ -28,6 +28,17 @@ Dir.chdir('src') do
       sys("git commit -m 'initial source'")
     end
 
+    [ ['perftools', true],
+      ['perftools-notests', true],
+      ['perftools-pprof', true],
+      ['perftools-gc', true],
+    ].each do |patch, apply|
+      if apply
+        sys("patch -p1 < ../../../patches/#{patch}.patch")
+        sys("git commit -am '#{patch}'") if ENV['DEV']
+      end
+    end
+
     sys("sed -i -e 's,SpinLock,ISpinLock,g' src/*.cc src/*.h src/base/*.cc src/base/*.h")
     sys("git commit -am 'rename spinlock'") if ENV['DEV']
   end
