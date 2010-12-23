@@ -1,10 +1,9 @@
 spec = Gem::Specification.new do |s|
-  s.name = 'perftools.rb'
-  s.version = '0.5.4'
-  s.date = '2010-11-12'
-  s.rubyforge_project = 'perftools-rb'
-  s.summary = 'google-perftools for ruby code'
-  s.description = 'A sampling profiler for ruby code based on patches to google-perftools'
+  s.name = 'vm-perftools.rb'
+  s.version = '0.5.4-vm'
+  s.date = '2010-12-22'
+  s.summary = 'google-perftools for ruby vm code'
+  s.description = 'A sampling profiler for ruby vm code based on google-perftools'
 
   s.homepage = "http://github.com/tmm1/perftools.rb"
 

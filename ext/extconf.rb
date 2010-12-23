@@ -11,18 +11,6 @@ end
 require 'mkmf'
 require 'fileutils'
 
-if RUBY_VERSION >= "1.9"
-  begin
-    require "ruby_core_source"
-  rescue LoadError
-    STDERR.puts "\n\n"
-    STDERR.puts "***************************************************************************************"
-    STDERR.puts "******************** PLEASE RUN gem install ruby_core_source FIRST ********************"
-    STDERR.puts "***************************************************************************************"
-    exit(1)
-  end
-end
-
 perftools = File.basename('google-perftools-1.6.tar.gz')
 dir = File.basename(perftools, '.tar.gz')
 
@@ -40,21 +28,6 @@ Dir.chdir('src') do
       sys("git commit -m 'initial source'")
     end
 
-    [ ['perftools', true],
-      ['perftools-notests', true],
-      ['perftools-pprof', true],
-      ['perftools-gc', true],
-      ['perftools-osx', RUBY_PLATFORM =~ /darwin/],
-      ['perftools-debug', true],
-      ['perftools-objects', true],
-      ['perftools-frames', true]
-    ].each do |patch, apply|
-      if apply
-        sys("patch -p1 < ../../../patches/#{patch}.patch")
-        sys("git commit -am '#{patch}'") if ENV['DEV']
-      end
-    end
-
     sys("sed -i -e 's,SpinLock,ISpinLock,g' src/*.cc src/*.h src/base/*.cc src/base/*.h")
     sys("git commit -am 'rename spinlock'") if ENV['DEV']
   end
@@ -68,7 +41,7 @@ Dir.chdir('src') do
     if RUBY_PLATFORM =~ /darwin10/
       ENV['CFLAGS'] = ENV['CXXFLAGS'] = '-D_XOPEN_SOURCE'
     end
-    sys("./configure --disable-heap-profiler --disable-heap-checker --disable-debugalloc --disable-shared")
+    sys("./configure --disable-heap-profiler --disable-heap-checker --disable-debugalloc --disable-shared  --enable-frame-pointers")
     sys("make")
     FileUtils.cp '.libs/libprofiler.a', '../../librubyprofiler.a'
   end
@@ -85,27 +58,7 @@ when /darwin/, /linux/, /freebsd/
   CONFIG['LDSHARED'] = "$(CXX) " + CONFIG['LDSHARED'].split[1..-1].join(' ')
 end
 
-if RUBY_VERSION >= "1.9"
-  add_define 'RUBY19'
+add_define 'RUBY18'
 
-  hdrs = proc {
-    have_header("method.h") # exists on 1.9.2
-    have_header("vm_core.h") and
-    have_header("iseq.h") and
-    have_header("insns.inc") and
-    have_header("insns_info.inc")
-  }
-
-  unless Ruby_core_source::create_makefile_with_core(hdrs, "perftools")
-    STDERR.puts "\n\n"
-    STDERR.puts "***************************************************************************************"
-    STDERR.puts "********************** Ruby_core_source::create_makefile FAILED ***********************"
-    STDERR.puts "***************************************************************************************"
-    exit(1)
-  end
-else
-  add_define 'RUBY18'
-
-  have_func('rb_during_gc', 'ruby.h')
-  create_makefile 'perftools'
-end
+have_func('rb_during_gc', 'ruby.h')
+create_makefile 'perftools'
