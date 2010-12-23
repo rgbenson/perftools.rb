@@ -41,7 +41,7 @@ Dir.chdir('src') do
     if RUBY_PLATFORM =~ /darwin10/
       ENV['CFLAGS'] = ENV['CXXFLAGS'] = '-D_XOPEN_SOURCE'
     end
-    sys("./configure --disable-heap-profiler --disable-heap-checker --disable-debugalloc --disable-shared  --enable-frame-pointers")
+    sys("./configure --disable-heap-profiler --disable-heap-checker --disable-debugalloc --disable-shared")
     sys("make")
     FileUtils.cp '.libs/libprofiler.a', '../../librubyprofiler.a'
   end
