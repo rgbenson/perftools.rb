@@ -72,4 +72,4 @@ end
 add_define 'RUBY18'
 
 have_func('rb_during_gc', 'ruby.h')
-create_makefile 'vm-perftools'
+create_makefile 'vm_perftools'
