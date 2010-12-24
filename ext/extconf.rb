@@ -28,8 +28,7 @@ Dir.chdir('src') do
       sys("git commit -m 'initial source'")
     end
 
-    [ ['perftools', true],
-      ['perftools-notests', true],
+    [ ['perftools-notests', true],
       ['perftools-pprof', true],
       ['perftools-gc', true],
     ].each do |patch, apply|
