@@ -460,7 +460,7 @@ profiler_at_exit(VALUE self)
 }
 
 void
-Init_perftools()
+Init_vm-perftools()
 {
   cPerfTools = rb_define_class("PerfTools", rb_cObject);
   eError = rb_define_class_under(cPerfTools, "Error", rb_eStandardError);
