@@ -28,9 +28,8 @@ Dir.chdir('src') do
       sys("git commit -m 'initial source'")
     end
 
-    [ ['perftools-notests', true],
-      ['perftools-pprof', true],
-      ['perftools-gc', true],
+    [ ['perftools', true],
+      ['perftools-notests', true]
     ].each do |patch, apply|
       if apply
         sys("patch -p1 < ../../../patches/#{patch}.patch")

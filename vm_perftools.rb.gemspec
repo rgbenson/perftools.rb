@@ -1,6 +1,6 @@
 spec = Gem::Specification.new do |s|
   s.name = 'vm_perftools.rb'
-  s.version = '0.1.5'
+  s.version = '0.1.6'
   s.date = '2010-12-22'
   s.summary = 'google-perftools for ruby vm code'
   s.description = 'A sampling profiler for ruby vm code based on google-perftools'
