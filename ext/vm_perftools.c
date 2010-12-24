@@ -44,8 +44,6 @@ cpuprofiler_stop(VALUE self)
     return Qfalse;
 
   bProfilerRunning = Qfalse;
-  objprofiler_teardown();
-  methprofiler_teardown();
   ProfilerStop();
   ProfilerFlush();
 
